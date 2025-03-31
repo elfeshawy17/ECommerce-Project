@@ -41,8 +41,8 @@ ecommerce-api/
 ## 🚀 Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/ecommerce-api.git
-   cd ecommerce-api
+   git clone https://github.com/elfeshawy17/ECommerce-Project.git
+   cd ECommerce-Project
    ```
 2. Install dependencies:
    ```sh
