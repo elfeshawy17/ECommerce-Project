@@ -23,19 +23,41 @@ This is a backend API for an E-Commerce application built using Node.js, Express
 
 ## 📁 Project Structure
 ```plaintext
-ecommerce-api/
-├── config/
-├── controllers/
+project/
 ├── dataBase/
 │   ├── models/
-│   └── dB.connection.js
-├── middlewares/
-├── routes/
-├── uploads/
-├── utils/
+│   │   ├── brand.model.js
+│   │   ├── cart.model.js
+│   │   ├── category.model.js
+│   │   ├── coupon.model.js
+│   │   ├── order.model.js
+│   │   ├── product.model.js
+│   │   ├── review.model.js
+│   │   ├── subCategory.model.js
+│   │   ├── user.model.js
+│   │   └── db.connection.js
+├── node_modules/
+├── src/
+│   ├── middlewares/
+│   ├── modules/
+│   │   ├── addresses/
+│   │   ├── auth/
+│   │   ├── brand/
+│   │   ├── cart/
+│   │   ├── category/
+│   │   ├── coupon/
+│   │   ├── order/
+│   │   ├── product/
+│   │   ├── reviews/
+│   │   ├── subCategory/
+│   │   ├── user/
+│   │   └── wishList/
+│   ├── uploads/
+│   ├── utils/
 ├── .env
-├── server.js
-└── package.json
+├── package-lock.json
+├── package.json
+└── server.js
 ```
 
 ## 🚀 Installation
@@ -170,5 +192,6 @@ DELETE /wishList             - Remove from wishlist (User)
 
 ## License
 This project is licensed under the MIT License.
+
 
 
