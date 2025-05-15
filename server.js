@@ -16,7 +16,7 @@ import { cartRouter } from './src/modules/cart/cart.routes.js';
 import { orderRouter } from './src/modules/order/order.routes.js';
 
 const app = express();
-const port = process.env.SERVER_PORT
+const port = process.env.SERVER_PORT;
 
 app.use(express.json());
 

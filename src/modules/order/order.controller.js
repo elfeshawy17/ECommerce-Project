@@ -41,8 +41,6 @@ const createCashOrder = asyncErrorHandler(
 
         await Product.bulkWrite(options);
 
-        await Cart.findByIdAndDelete(cart._id);
-
         res.status(201).json({
             status: HttpStatusText.SUCCESS,
             data: {order}

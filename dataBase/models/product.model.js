@@ -6,7 +6,6 @@ const productSchema = new Schema({
     title: {
         type: String,
         required: true,
-        unique: true,
         minLength: [3, 'Too Short'],
         trim: true
     },
