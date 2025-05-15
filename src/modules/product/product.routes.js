@@ -9,12 +9,12 @@ import { allowedTo } from "../../middlewares/allowedTo.js";
 
 export const productRouter = Router();
 
-productRouter.use(authController.protectedRoute, allowedTo('user', 'admin'));
+productRouter.use(authController.protectedRoute);
 
-productRouter.post('/', uploadFiles('product', 'imgCover', 'images'), validate(addValidation), productController.addProduct);
+productRouter.post('/', allowedTo('admin'), uploadFiles('product', 'imgCover', 'images'), validate(addValidation), productController.addProduct);
 
-productRouter.get('/', productController.getAllProducts);
+productRouter.get('/', allowedTo('admin'), productController.getAllProducts);
 
-productRouter.put('/:id', productController.updateProduct);
+productRouter.put('/:id', allowedTo('admin'), productController.updateProduct);
 
-productRouter.delete('/:id', productController.deleteProduct);
+productRouter.delete('/:id', allowedTo('admin'), productController.deleteProduct);

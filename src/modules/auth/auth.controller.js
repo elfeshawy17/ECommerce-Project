@@ -12,10 +12,17 @@ const register = asyncErrorHandler(
 
         const user = new User(req.body);
         await user.save();
-        const token = jwt.sign({userId: user._id, role: user.role}, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({userId: user._id, role: user.role}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
         res.status(201).json({
                     status: HttpStatusText.SUCCESS,
-                    data: {user, token}
+                    data: {
+                        user: {
+                            _id: user._id,
+                            name: user.name,
+                            email: user.email,
+                        },
+                        token
+                    }
                 });
 
     }
@@ -30,10 +37,17 @@ const login = asyncErrorHandler(
         const user = await User.findOne({email: req.body.email});
     
         if (user && bcrypt.compareSync(req.body.password, user.password)){
-            const token = jwt.sign({userId: user._id, role: user.role}, process.env.JWT_SECRET_KEY);
-            return res.status(200).json({
+            const token = jwt.sign({userId: user._id, role: user.role}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
+            return res.status(201).json({
                 status: HttpStatusText.SUCCESS,
-                data: {user, token}
+                data: {
+                    user: {
+                        _id: user._id,
+                        name: user.name,
+                        email: user.email,
+                    },
+                    token
+                }
             });
         }
 
@@ -59,7 +73,7 @@ const changePassword = asyncErrorHandler(
                 {new: true}
             );
         
-            const token = jwt.sign({userId: user._id, role: user.role}, process.env.JWT_SECRET_KEY);
+            const token = jwt.sign({userId: user._id, role: user.role}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
             return res.status(200).json({
                 status: HttpStatusText.SUCCESS,
                 data: {user, token}
@@ -96,18 +110,6 @@ const protectedRoute = asyncErrorHandler(
         }
 
         const user = await User.findById(userPayload.userId);
-        if (!user) {
-            const error = AppError.create('User Is Not Found', 404, HttpStatusText.FAIL);
-            return next(error);
-        }
-
-        if (user.passwordChangedAt) {
-            const time = parseInt(user.passwordChangedAt.getTime() /1000);
-            if (time > userPayload.iat){
-                const error = AppError.create('Invalid Token Please Try Login Again', 401, HttpStatusText.FAIL);
-                return next(error);
-            }
-        }
 
         req.user = user;
         next();

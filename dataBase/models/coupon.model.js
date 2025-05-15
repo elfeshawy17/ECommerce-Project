@@ -10,9 +10,15 @@ const couponSchema = new Schema({
         trim: true
     },
 
-    expire: Date,
+    expire: {
+        type: Date,
+        required: true
+    },
 
-    discount: Number
+    discount: {
+        type: Number,
+        required: true
+    }
 
 }, {
     timestamps: true,

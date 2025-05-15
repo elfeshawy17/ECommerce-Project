@@ -15,7 +15,7 @@ const createCashOrder = asyncErrorHandler(
         const cart = await Cart.findOne({user: req.user._id});
         if (!cart) {
             const error = AppError.create('Cart is not found.', 404, HttpStatusText.FAIL);
-            next(error);
+            return next(error);
         }
 
         const totalOrderPrice = cart.totalPriceAfterDiscount || cart.totalPrice;
@@ -55,21 +55,24 @@ const createCashOrder = asyncErrorHandler(
 const checkoutOrder = asyncErrorHandler(
     async(req,res,next)=>{
 
-        const cart = await Cart.findById(req.params.id);
-        if(!cart){
-            const error = AppError.create('Cart not found', 400, HttpStatusText.FAIL);
+        const order = await Order.findById(req.params.id);
+        if(!order){
+            const error = AppError.create('Order not found', 400, HttpStatusText.FAIL);
             return next(error);
         }
         
-
-        const totalOrderPrice = cart.totalPriceAfterDiscount || cart.totalPrice
+        const totalOrderPrice = order.totalOrderPrice;
+        if (!totalOrderPrice || isNaN(totalOrderPrice)) {
+            const error = AppError.create('Invalid order price', 400, HttpStatusText.FAIL);
+            return next(error);
+        }
 
         const session = await stripe.checkout.sessions.create({
             line_items: [
                 {
                     price_data: {
                         currency: 'usd',
-                        unit_amount: totalOrderPrice*100,
+                        unit_amount: Math.round(totalOrderPrice * 100),
                         product_data: {
                             name: req.user.name,
                         }
@@ -83,8 +86,6 @@ const checkoutOrder = asyncErrorHandler(
             customer_email: req.user.email,
             client_reference_id: req.params.id,
         });
-
-        await Cart.findByIdAndDelete(cart._id);
 
         res.status(201).json({
             status: HttpStatusText.SUCCESS,

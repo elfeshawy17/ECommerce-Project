@@ -18,6 +18,11 @@ const categorySchema = new Schema({
 
     img: String,
 
+    subCategory: {
+    type: Types.ObjectId,
+    ref: 'SubCategory'
+    },
+
     createdBy: {
         type: Types.ObjectId,
         ref: 'User'
