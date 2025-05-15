@@ -27,7 +27,7 @@ export const fileUpload = (folder) => {
         if (file.mimetype.startsWith('image')){
             cb(null, true)
         } else {
-            const error = AppError.create('Product Is Already Exists', 400, HttpStatusText.FAIL);
+            const error = AppError.create('Only image files are allowed', 400, HttpStatusText.FAIL);
             cb (error, false)
         }
 
